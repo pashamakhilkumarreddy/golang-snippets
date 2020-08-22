@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -9,6 +10,7 @@ const maxLength int = 100
 
 func main() {
 	fmt.Println("Stack")
+	stack := make([]int, 0)
 	for true {
 		printMessage("Please enter the operation you want to perform on stack", "info")
 		printMessage(`
@@ -18,8 +20,8 @@ func main() {
 			4. Peek
 			5. Check is stack full
 			6. Check is stack empty
+			7. Exit
 		`, "info")
-		stack := make([]int, 0)
 		var choice uint16
 		_, err := fmt.Scanf("%d", &choice)
 		if err != nil {
@@ -41,27 +43,33 @@ func main() {
 					fmt.Sprintf("Successfully pushed %v onto the stack", value),
 					"info")
 			}
+			break
 		case 2:
 			popped := pop(&stack)
 			if popped == -1 {
 				printMessage("Can't pop from an empty stack", "warning")
 			} else {
 				printMessage(
-					fmt.Sprintf("Successfully popped %v from the stack", stack[popped]),
+					fmt.Sprintf("Successfully popped %v from the stack", popped),
 					"info")
 			}
+			break
 		case 3:
 			fmt.Printf("%v\n", stack)
+			break
 		case 4:
 			fmt.Println(peek(stack))
+			break
 		case 5:
 			fmt.Println(isFull(&stack))
+			break
 		case 6:
 			fmt.Println(isEmpty(&stack))
+			break
 		default:
 			fmt.Println("If you want to exit, please press y(yes) else n(no)")
 			var exitScreen string
-			_, err := fmt.Scanf("%q", exitScreen)
+			_, err := fmt.Scanf("%v", &exitScreen)
 			if err != nil {
 				printMessage(err.Error(), "error")
 			}
@@ -69,12 +77,11 @@ func main() {
 			exitScreen = strings.ToLower(exitScreen)
 			if exitScreen == "y" || exitScreen == "yes" {
 				printMessage("Bye", "info")
-				break
+				os.Exit(0)
 			} else {
 				continue
 			}
 		}
-
 	}
 }
 
@@ -83,6 +90,8 @@ func printMessage(message, messageType string) {
 	case "error":
 		fmt.Println(message)
 	case "warning":
+		fmt.Println(message)
+	case "info":
 		fmt.Println(message)
 	default:
 		fmt.Println(message)
@@ -94,17 +103,19 @@ func push(stack *[]int, value int) int {
 		printMessage("Can't push onto a filled stack", "warning")
 		return -1
 	}
-	_ = append(*stack, value)
+	*stack = append(*stack, value)
 	return 0
 }
 
 func pop(stack *[]int) int {
 	if isEmpty(stack) == true {
-		fmt.Println("Can't pop from an empty stack", "warning")
+		printMessage("Can't pop from an empty stack", "warning")
 		return -1
 	}
-	
-	return len(*stack) - 1
+	stackLen := len(*stack) - 1
+	poppedValue := (*stack)[stackLen]
+	*stack = append((*stack)[:stackLen], (*stack)[stackLen+1:]...)
+	return poppedValue
 }
 
 func peek(stack []int) interface{} {
@@ -116,5 +127,5 @@ func isFull(stack *[]int) bool {
 }
 
 func isEmpty(stack *[]int) bool {
-	return len(*stack) == maxLength
+	return len(*stack) == 0
 }
