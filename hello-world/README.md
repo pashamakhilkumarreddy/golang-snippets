@@ -2,6 +2,8 @@
 
 `go run --work main.go`
 
-`go build main.go && ./hello-world` 
+`go build && ./hello-world` 
+
+`go build main.go && ./main` 
 
 `go install && hello-world`
