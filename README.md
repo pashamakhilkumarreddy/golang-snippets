@@ -1,1 +1,1 @@
-# Data Structures in Golang
+# Data Structures and Golang Code Snippets
