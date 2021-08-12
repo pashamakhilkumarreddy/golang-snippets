@@ -6,6 +6,8 @@ Run `go get <package_name>` to install a package or dependency
 
 Run `go doc <name>` to print the documentation related to a package, constant etc.
 
+Run `go doc --http=:6000` to run the documentation locally (Visit http://localhost:6060)
+
 Run `go version` to print the golang version
 
 Run `go vet <path_to_file>` to analyze source code and report any possible suspicious code 
