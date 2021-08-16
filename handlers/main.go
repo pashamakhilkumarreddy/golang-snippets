@@ -32,6 +32,7 @@ func timeHandlerClosure(format string) http.Handler {
 func main() {
 	log.Println("Handlers in Golang")
 	port := flag.String("port", ":4000", "port for the server to listen to")
+	flag.Parse()
 	mux := http.NewServeMux() // Same as DefaultServeMux (get's instantiated by default)
 	// avoid using DefaultServeMux as it could pose a security risk because of global scope
 
